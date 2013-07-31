@@ -25,29 +25,11 @@
             <toolkit:GestureListener DragDelta="GestureListener_OnDragDelta" DragCompleted="GestureListener_OnDragCompleted" />
         </toolkit:GestureService.GestureListener>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="SettingsStateGroup" CurrentStateChanged="SettingsStateGroup_CurrentStateChanged">
-                <VisualStateGroup.Transitions>
-                    <VisualTransition GeneratedDuration="0:0:0.3">
-                        <VisualTransition.GeneratedEasingFunction>
-                            <CubicEase EasingMode="EaseInOut"/>
-                        </VisualTransition.GeneratedEasingFunction>
-                    </VisualTransition>
-                </VisualStateGroup.Transitions>
-                <VisualState x:Name="SettingsClosedState" />
-                <VisualState x:Name="SettingsOpenState">
-                    <Storyboard>
-                        <DoubleAnimation Duration="0" To="380" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetX)" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True"/>
-                        <DoubleAnimation Duration="0" To="480" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.GlobalOffsetX)" Storyboard.TargetName="SettingsPane" d:IsOptimized="True"/>
-                    </Storyboard>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <Grid x:Name="SettingsPane"
               Background="Teal"
               Grid.Row="0"
-              Margin="-480,0,0,0">
+              Margin="-860,0,0,0"
+              Width="380">
             <Grid.Projection>
                 <PlaneProjection/>
             </Grid.Projection>

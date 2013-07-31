@@ -16,8 +16,7 @@ namespace SettingsPageAnimation
         private double _dragDistanceToClose = 305.0;
         private double _dragDistanceNegative = -75.0;
 
-        private FrameworkElement _feRoot;
-        private FrameworkElement _feSettings;
+        private FrameworkElement _feContainer;
 
         // Constructor
         public MainPage()
@@ -27,17 +26,14 @@ namespace SettingsPageAnimation
             // Set the data context of the LongListSelector control to the sample data
             DataContext = App.ViewModel;
 
-            _feRoot = this.LayoutRoot as FrameworkElement;
-            _feSettings = this.SettingsPane as FrameworkElement;
+            _feContainer = this.Container as FrameworkElement;
         }
 
         // Load data for the ViewModel Items
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (!App.ViewModel.IsDataLoaded)
-            {
                 App.ViewModel.LoadData();
-            }
         }
 
         // Handle selection changed on LongListSelector
@@ -69,16 +65,8 @@ namespace SettingsPageAnimation
 
         private void CloseSettings()
         {
-            //VisualStateManager.GoToState(this, "SettingsClosedState", true);
-
-            var trans = _feRoot.GetHorizontalOffset().Transform;
+            var trans = _feContainer.GetHorizontalOffset().Transform;
             trans.Animate(trans.X, 0, TranslateTransform.XProperty, 300, 0, new CubicEase
-            {
-                EasingMode = EasingMode.EaseOut
-            });
-
-            trans = _feSettings.GetHorizontalOffset().Transform;
-            trans.Animate(trans.X, -480, TranslateTransform.XProperty, 300, 0, new CubicEase
             {
                 EasingMode = EasingMode.EaseOut
             });
@@ -88,19 +76,11 @@ namespace SettingsPageAnimation
 
         private void OpenSettings()
         {
-            //VisualStateManager.GoToState(this, "SettingsOpenState", true);
-
-            var trans = _feRoot.GetHorizontalOffset().Transform;
+            var trans = _feContainer.GetHorizontalOffset().Transform;
             trans.Animate(trans.X, 380, TranslateTransform.XProperty, 300, 0, new CubicEase
                 {
                     EasingMode = EasingMode.EaseOut
                 });
-
-            trans = _feSettings.GetHorizontalOffset().Transform;
-            trans.Animate(trans.X, 480, TranslateTransform.XProperty, 300, 0, new CubicEase
-            {
-                EasingMode = EasingMode.EaseOut
-            });
 
             _isSettingsOpen = true;
         }
@@ -109,27 +89,20 @@ namespace SettingsPageAnimation
         {
             if (e.Direction == System.Windows.Controls.Orientation.Horizontal && e.HorizontalChange > 0 && !_isSettingsOpen)
             {
-                double offset = _feRoot.GetHorizontalOffset().Value + e.HorizontalChange;
+                double offset = _feContainer.GetHorizontalOffset().Value + e.HorizontalChange;
                 if (offset > _dragDistanceToOpen)
                     this.OpenSettings();
                 else
-                {
-                    _feRoot.SetHorizontalOffset(offset);
-                    _feSettings.SetHorizontalOffset(offset);
-                }
+                    _feContainer.SetHorizontalOffset(offset);
             }
 
             if (e.Direction == System.Windows.Controls.Orientation.Horizontal && e.HorizontalChange < 0 && _isSettingsOpen)
             {
-                double offsetRoot = _feRoot.GetHorizontalOffset().Value + e.HorizontalChange;
-                double offsetSettings = _feSettings.GetHorizontalOffset().Value + e.HorizontalChange;
-                if (offsetRoot < _dragDistanceToClose)
+                double offsetContainer = _feContainer.GetHorizontalOffset().Value + e.HorizontalChange;
+                if (offsetContainer < _dragDistanceToClose)
                     this.CloseSettings();
                 else
-                {
-                    _feRoot.SetHorizontalOffset(offsetRoot);
-                    _feSettings.SetHorizontalOffset(offsetSettings);
-                }
+                    _feContainer.SetHorizontalOffset(offsetContainer);
             }
         }
 
@@ -160,15 +133,9 @@ namespace SettingsPageAnimation
         private void ResetLayoutRoot()
         {
             if (!_isSettingsOpen)
-            {
-                _feRoot.SetHorizontalOffset(0.0);
-                _feSettings.SetHorizontalOffset(-480.0);
-            }
+                _feContainer.SetHorizontalOffset(0.0);
             else
-            {
-                _feRoot.SetHorizontalOffset(380.0);
-                _feSettings.SetHorizontalOffset(480.0);
-            }
+                _feContainer.SetHorizontalOffset(380.0);
         }
     }
 }
